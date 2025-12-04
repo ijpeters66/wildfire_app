@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<a class="btn" href="{{ url_for('add_person') }}">Add person</a>
+<a class="btn" href="{{ url_for('download_report') }}">Download full report (CSV)</a>
+<a class="btn warning" href="{{ url_for('download_alerts_report') }}">Download alerts (CSV)</a>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Agency</th>
+      <th>Latest vitals</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in dashboard_data %}
+      <tr>
+        <td>{{ item.person.name }}</td>
+        <td>{{ item.person.role }}</td>
+        <td>{{ item.person.agency }}</td>
+        <td>
+          {% if item.latest %}
+            HR {{ item.latest.heart_rate or "—" }} |
+            BP {{ item.latest.blood_pressure or "—" }} |
+            Temp {{ item.latest.temperature or "—" }} °C |
+            SpO₂ {{ item.latest.spo2 or "—" }} % |
+            COHb {{ item.latest.carboxyhemoglobin or "—" }} %
+          {% else %}
+            —
+          {% endif %}
+        </td>
+        <td>
+          <span class="badge {{ item.status }}">{{ item.status|upper }}</span>
+          {% if item.messages and item.status != "normal" %}
+            <div style="font-size: 12px; color:#555;">
+              {% for m in item.messages %}
+                • {{ m }}<br>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </td>
+        <td>
+          <a class="btn secondary" href="{{ url_for('view_vitals', person_id=item.person.id) }}">View vitals</a>
+          <a class="btn" href="{{ url_for('add_vitals', person_id=item.person.id) }}">Add vitals</a>
+          <a class="btn secondary" href="{{ url_for('download_person_report', person_id=item.person.id) }}">
+            Download CSV
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

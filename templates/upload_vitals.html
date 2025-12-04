@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Upload vitals CSV</h1>
+
+<p>Upload a CSV file containing vitals data (name, heart_rate, blood_pressure, temperature, spo2, carboxyhemoglobin, timestamp).</p>
+
+<form method="POST" enctype="multipart/form-data">
+  <input type="file" name="file" accept=".csv" required>
+  <br><br>
+  <button class="btn" type="submit">Upload vitals</button>
+  <a class="btn secondary" href="{{ url_for('dashboard') }}">Back to dashboard</a>
+</form>
+{% endblock %}

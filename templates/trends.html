@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Vitals Trends{% endblock %}
+
+{% block content %}
+  <h2>Vitals History for {{ person.name }}</h2>
+  {% if vitals %}
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Heart Rate</th>
+          <th>Blood Pressure</th>
+          <th>Temperature</th>
+          <th>SpO₂</th>
+          <th>Carboxyhemoglobin</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in vitals %}
+        <tr>
+          <td>{{ v.timestamp }}</td>
+          <td>{{ v.heart_rate if v.heart_rate is not none else "" }}</td>
+          <td>{{ v.blood_pressure if v.blood_pressure else "" }}</td>
+          <td>{{ v.temperature if v.temperature is not none else "" }}</td>
+          <td>{{ v.spo2 if v.spo2 is not none else "" }}</td>
+          <td>{{ v.carboxyhemoglobin if v.carboxyhemoglobin is not none else "" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No vitals recorded yet for this person.</p>
+  {% endif %}
+
+  <p>
+    <a class="button" href="{{ url_for('add_vitals', person_id=person.id) }}">Add New Vitals</a>
+    <a class="button" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+  </p>
+{% endblock %}

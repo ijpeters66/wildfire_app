@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Vitals history for {{ person.name }}</h1>
+
+<a class="btn" href="{{ url_for('add_vitals', person_id=person.id) }}">Add vitals</a>
+<a class="btn secondary" href="{{ url_for('download_person_report', person_id=person.id) }}">
+  Download CSV
+</a>
+
+<table>
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Heart rate</th>
+      <th>Blood pressure</th>
+      <th>Temperature</th>
+      <th>SpO₂</th>
+      <th>COHb</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for v in vitals %}
+      {% set status, messages = evaluate_status(v) %}
+      <tr>
+        <td>{{ v.timestamp }}</td>
+        <td>{{ v.heart_rate or "—" }}</td>
+        <td>{{ v.blood_pressure or "—" }}</td>
+        <td>{{ v.temperature or "—" }}</td>
+        <td>{{ v.spo2 or "—" }}</td>
+        <td>{{ v.carboxyhemoglobin or "—" }}</td>
+        <td><span class="badge {{ status }}">{{ status|upper }}</span></td>
+      </tr>
+      {% if messages and status != "normal" %}
+        <tr>
+          <td colspan="7" style="font-size: 12px; color:#555;">
+            {% for m in messages %}
+              • {{ m }}<br>
+            {% endfor %}
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if vitals|length > 1 %}
+  <h2>Trends</h2>
+  <canvas id="trendChart" height="120"></canvas>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if vitals|length > 1 %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const labels = [{% for v in vitals|reverse %}"{{ v.timestamp }}",{% endfor %}];
+  const hr = [{% for v in vitals|reverse %}{{ v.heart_rate or 'null' }},{% endfor %}];
+  const spo2 = [{% for v in vitals|reverse %}{{ v.spo2 or 'null' }},{% endfor %}];
+  const temp = [{% for v in vitals|reverse %}{{ v.temperature or 'null' }},{% endfor %}];
+
+  const ctx = document.getElementById('trendChart');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Heart rate', data: hr, borderColor: '#c62828', backgroundColor: 'rgba(198,40,40,0.1)', tension: 0.2 },
+        { label: 'SpO₂', data: spo2, borderColor: '#2e7d32', backgroundColor: 'rgba(46,125,50,0.1)', tension: 0.2 },
+        { label: 'Temperature °C', data: temp, borderColor: '#1976d2', backgroundColor: 'rgba(25,118,210,0.1)', tension: 0.2 }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: false } }
+    }
+  });
+</script>
+{% endif %}
+{% endblock %}

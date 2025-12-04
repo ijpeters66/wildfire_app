@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Add new personnel</h1>
+
+<form method="POST">
+  <div>
+    <label>Name</label><br>
+    <input type="text" name="name" required placeholder="Full name">
+  </div>
+  <div>
+    <label>Role</label><br>
+    <input type="text" name="role" placeholder="e.g. Firefighter, Paramedic">
+  </div>
+  <div>
+    <label>Agency</label><br>
+    <input type="text" name="agency" placeholder="e.g. Portland CFA">
+  </div>
+  <div>
+    <label>Date of birth</label><br>
+    <input type="date" name="dob">
+    <small style="color:#555;">Format: YYYY-MM-DD</small>
+  </div>
+  <br>
+  <button class="btn" type="submit">Save person</button>
+  <a class="btn secondary" href="{{ url_for('dashboard') }}">Back to dashboard</a>
+</form>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Alerts</h1>
+
+<a class="btn alert" href="{{ url_for('download_alerts_report') }}">Download alerts (CSV)</a>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Role</th>
+      <th>Agency</th>
+      <th>Latest vitals</th>
+      <th>Status</th>
+      <th>Alerts</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in alerts_data %}
+      <tr>
+        <td>{{ item.person.name }}</td>
+        <td>{{ item.person.role }}</td>
+        <td>{{ item.person.agency }}</td>
+        <td>
+          HR {{ item.latest.heart_rate or "—" }} |
+          BP {{ item.latest.blood_pressure or "—" }} |
+          Temp {{ item.latest.temperature or "—" }} °C |
+          SpO₂ {{ item.latest.spo2 or "—" }} % |
+          COHb {{ item.latest.carboxyhemoglobin or "—" }} %
+        </td>
+        <td><span class="badge {{ item.status }}">{{ item.status|upper }}</span></td>
+        <td>
+          {% for m in item.alerts %}
+            • {{ m }}<br>
+          {% endfor %}
+        </td>
+        <td>
+          <a class="btn secondary" href="{{ url_for('view_vitals', person_id=item.person.id) }}">View vitals</a>
+          <a class="btn" href="{{ url_for('add_vitals', person_id=item.person.id) }}">Add vitals</a>
+          <a class="btn secondary" href="{{ url_for('download_person_report', person_id=item.person.id) }}">
+            Download CSV
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

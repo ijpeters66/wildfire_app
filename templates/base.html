@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title or "Vitals Dashboard" }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Simple styling; replace with Bootstrap if desired -->
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: #fafafa; }
+      header { background: #0d47a1; color: #fff; padding: 12px 16px; }
+      nav a { color: #fff; margin-right: 12px; text-decoration: none; font-weight: 500; }
+      nav a:hover { text-decoration: underline; }
+      .container { padding: 16px; }
+      .btn { display: inline-block; background: #1976d2; color: #fff; padding: 8px 12px; text-decoration: none; border-radius: 4px; margin: 2px; }
+      .btn.secondary { background: #455a64; }
+      .btn.warning { background: #f57c00; }
+      .btn.alert { background: #c62828; }
+      .badge { padding: 4px 8px; border-radius: 12px; color: #fff; font-size: 12px; }
+      .badge.normal { background: #2e7d32; }
+      .badge.warning { background: #f57c00; }
+      .badge.alert { background: #c62828; }
+      table { width: 100%; border-collapse: collapse; margin-top: 12px; background: #fff; }
+      th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+      th { background: #f5f5f5; }
+      .flash { padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+      .flash.success { background: #e8f5e9; color: #2e7d32; }
+      .flash.info { background: #e3f2fd; color: #0d47a1; }
+      .flash.danger { background: #ffebee; color: #c62828; }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+<header>
+  <nav>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('upload_personnel') }}">Upload personnel</a>
+    <a href="{{ url_for('upload_vitals') }}">Upload vitals</a>
+    <a href="{{ url_for('alerts') }}">Alerts</a>
+    <a href="{{ url_for('download_report') }}">Download full report (CSV)</a>
+    <a href="{{ url_for('download_alerts_report') }}">Download alerts (CSV)</a>
+  </nav>
+</header>
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,112 @@
+/* Basic layout */
+body { 
+  font-family: "Helvetica Neue", Arial, sans-serif; 
+  margin: 0; 
+  padding: 0; 
+  background-color: #ffffff;
+  color: #242949; /* Port Gore (dark navy) */
+}
+
+header { 
+  background: #C6112D; /* Crimson */
+  color: white; 
+  padding: 10px 20px; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header img {
+  height: 60px; /* logo size */
+}
+
+.nav { 
+  list-style: none; 
+  display: flex; 
+  gap: 16px; 
+  margin: 0; 
+  padding: 0; 
+}
+.nav a { 
+  color: white; 
+  text-decoration: none; 
+  font-weight: bold;
+}
+.nav a:hover {
+  text-decoration: underline;
+}
+
+.container { padding: 20px; }
+
+footer { 
+  padding: 10px 20px; 
+  background: #CCCCCC; /* Silver */
+  color: #242949; /* Port Gore */
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Tables */
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  margin-top: 12px; 
+}
+th, td { 
+  border: 1px solid #CCCCCC; /* Silver */
+  padding: 8px; 
+  text-align: left; 
+}
+thead { 
+  background: #C6112D; /* Crimson */
+  color: white;
+}
+
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 8px 14px;
+  background: #C6112D; /* Crimson */
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-right: 6px;
+  font-weight: bold;
+}
+.button:hover { 
+  background: #242949; /* Port Gore */
+}
+
+/* Badges */
+.badge-alert {
+  color: white;
+  background-color: #C6112D; /* Crimson */
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: bold;
+}
+.badge-warning {
+  color: black;
+  background-color: #ffeb3b; /* Yellow */
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: bold;
+}
+.badge-normal {
+  color: white;
+  background-color: #2e7d32; /* Green */
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: bold;
+}
+
+/* Alerts list */
+.alert-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.alert-list li {
+  margin-bottom: 6px;
+  display: inline-block;
+}

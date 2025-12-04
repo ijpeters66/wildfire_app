@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}History for {{ person.name }}{% endblock %}
+
+{% block content %}
+  <h2>Vitals History: {{ person.name }}</h2>
+  <div class="buttons">
+    <a class="button" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    <a class="button" href="{{ url_for('add_vitals', person_id=person.id) }}">Add New Vitals</a>
+  </div>
+
+  {% if vitals and vitals|length > 0 %}
+    <table>
+      <tr>
+        <th>Date/Time</th>
+        <th>Temperature (°C)</th>
+        <th>Pulse (bpm)</th>
+        <th>Respiration (/min)</th>
+        <th>O₂ Sat (%)</th>
+        <th>COHb (%)</th>
+        <th>Systolic BP (mmHg)</th>
+        <th>Diastolic BP (mmHg)</th>
+        <th>Status</th>
+      </tr>
+      {% for v in vitals %}
+      <tr>
+        <td>{{ v.datetime.strftime("%Y-%m-%d %H:%M") }}</td>
+        <td>{{ v.temperature }}</td>
+        <td>{{ v.pulse }}</td>
+        <td>{{ v.respiration }}</td>
+        <td>{{ v.oxygen_sat }}</td>
+        <td>{{ v.carboxyhemoglobin }}</td>
+        <td>{{ v.systolic_bp }}</td>
+        <td>{{ v.diastolic_bp }}</td>
+        <td>
+          {% set status = classify_status(v) %}
+          {% if status == "green" %}
+            <span class="status green">● Fit</span>
+          {% elif status == "amber" %}
+            <span class="status amber">● Caution</span>
+          {% elif status == "red" %}
+            <span class="status red">● Not Fit</span>
+          {% else %}
+            <span class="status">Unknown</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>No vitals recorded yet for {{ person.name }}.</p>
+  {% endif %}
+{% endblock %}

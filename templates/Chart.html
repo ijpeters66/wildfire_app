@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Vitals Chart for {{ person.name }}{% endblock %}
+
+{% block content %}
+  <h2>Vitals Chart for {{ person.name }}</h2>
+  <div class="buttons">
+    <a class="button" href="{{ url_for('history', person_id=person.id) }}">Back to History</a>
+    <a class="button" href="{{ url_for('dashboard') }}">Dashboard</a>
+  </div>
+  <img src="data:image/png;base64,{{ chart_url }}" alt="Vitals Chart" style="width:100%; max-width:900px; margin-top:20px;">
+{% endblock %}

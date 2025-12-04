@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Add vitals for {{ person.name }}</h1>
+
+<form method="POST">
+  <div>
+    <label>Heart rate (bpm)</label><br>
+    <input type="number" name="heart_rate" min="0" step="1">
+  </div>
+  <div>
+    <label>Blood pressure (systolic/diastolic, e.g., 120/80)</label><br>
+    <input type="text" name="blood_pressure" placeholder="e.g. 120/80">
+  </div>
+  <div>
+    <label>Temperature (°C)</label><br>
+    <input type="number" name="temperature" step="0.1">
+  </div>
+  <div>
+    <label>SpO₂ (%)</label><br>
+    <input type="number" name="spo2" min="0" max="100" step="1">
+  </div>
+  <div>
+    <label>Carboxyhemoglobin (%)</label><br>
+    <input type="number" name="carboxyhemoglobin" step="0.1">
+  </div>
+  <br>
+  <button class="btn" type="submit">Record vitals</button>
+  <a class="btn secondary" href="{{ url_for('view_vitals', person_id=person.id) }}">Back to history</a>
+</form>
+{% endblock %}
